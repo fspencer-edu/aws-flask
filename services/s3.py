@@ -4,7 +4,7 @@ import uuid
 from datetime import datetime, timezone
 
 import boto3
-from botocore.config import Config as BotoConfig
+from botocore.client import Config as BotoConfig
 from werkzeug.utils import secure_filename
 
 from config import Config
@@ -14,7 +14,11 @@ s3 = boto3.client(
     region_name=Config.AWS_REGION,
     aws_access_key_id=Config.AWS_ACCESS_KEY_ID,
     aws_secret_access_key=Config.AWS_SECRET_ACCESS_KEY,
-    config=BotoConfig(signature_version="s3v4"),
+    endpoint_url=f"https://s3.{Config.AWS_REGION}.amazonaws.com",
+    config=BotoConfig(
+        signature_version="s3v4",
+        s3={"addressing_style": "virtual"},
+    ),
 )
 
 
@@ -38,14 +42,18 @@ def upload_image(file):
     return key
 
 
-def generate_image_url(key):
+def generate_image_url(key, expires_in=3600):
     if not key:
         return None
 
     return s3.generate_presigned_url(
         "get_object",
-        Params={"Bucket": Config.S3_BUCKET, "Key": key},
-        ExpiresIn=3600,
+        Params={
+            "Bucket": Config.S3_BUCKET,
+            "Key": key,
+        },
+        ExpiresIn=expires_in,
+        HttpMethod="GET",
     )
 
 
@@ -87,7 +95,6 @@ def get_all_entries():
         data["image_url"] = generate_image_url(image_key) if image_key else None
 
         print("ENTRY:", data)
-
         entries.append(data)
 
     entries.sort(key=lambda x: x["created_at"], reverse=True)
