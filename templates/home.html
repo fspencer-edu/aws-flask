@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cloud Journal</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 0 16px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .entry {
+      border: 1px solid #ddd;
+      padding: 16px;
+      margin: 16px 0;
+      border-radius: 10px;
+      background: #fafafa;
+    }
+
+    img {
+      max-width: 320px;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+
+    a.button {
+      text-decoration: none;
+      background: #111;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <h1>Cloud Journal</h1>
+    <a class="button" href="/new">Create Entry</a>
+  </div>
+
+  {% if rows %}
+    {% for row in rows %}
+      <div class="entry">
+        <h3>{{ row[1] }}</h3>
+        <p>{{ row[2] }}</p>
+
+        {% if row[3] %}
+          <img src="{{ row[3] }}" alt="Uploaded image">
+        {% endif %}
+
+        <p><small>{{ row[4] }}</small></p>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p>No entries yet.</p>
+  {% endif %}
+</body>
+</html>

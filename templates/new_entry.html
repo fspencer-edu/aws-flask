@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>New Entry</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 700px;
+      margin: 40px auto;
+      padding: 0 16px;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      margin-bottom: 16px;
+      box-sizing: border-box;
+    }
+
+    textarea {
+      min-height: 180px;
+    }
+
+    button {
+      background: #111;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>New Entry</h1>
+
+  <form method="POST" enctype="multipart/form-data">
+    <label>Title</label>
+    <input name="title" required>
+
+    <label>Content</label>
+    <textarea name="content" required></textarea>
+
+    <label>Image</label>
+    <input type="file" name="image">
+
+    <button type="submit">Save</button>
+  </form>
+
+  <p><a href="/">Back to home</a></p>
+</body>
+</html>

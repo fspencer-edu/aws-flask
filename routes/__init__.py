@@ -1,0 +1,1 @@
+from .journal_routes import journal_bp
