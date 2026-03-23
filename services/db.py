@@ -1,6 +1,25 @@
 import psycopg2
 from config import Config
 
+def init_db():
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    cur.execute(
+        """
+        CREATE TABLE IF NOT EXISTS journal_entries (
+            id SERIAL PRIMARY KEY,
+            title TEXT NOT NULL,
+            content TEXT NOT NULL,
+            image_url TEXT,
+            created_at TIMESTAMP NOT NULL
+        );
+        """
+    )
+
+    conn.commit()
+    cur.close()
+    conn.close()
 
 def get_db_connection():
     return psycopg2.connect(

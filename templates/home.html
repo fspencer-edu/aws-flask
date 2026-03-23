@@ -2,42 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cloud Journal</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      max-width: 900px;
-      margin: 40px auto;
-      padding: 0 16px;
-    }
-
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .entry {
-      border: 1px solid #ddd;
-      padding: 16px;
-      margin: 16px 0;
-      border-radius: 10px;
-      background: #fafafa;
-    }
-
-    img {
-      max-width: 320px;
-      border-radius: 8px;
-      margin-top: 10px;
-    }
-
-    a.button {
-      text-decoration: none;
-      background: #111;
-      color: white;
-      padding: 10px 14px;
-      border-radius: 8px;
-    }
+    body { font-family: Arial, sans-serif; max-width: 900px; margin: 40px auto; padding: 0 16px; }
+    .topbar { display: flex; justify-content: space-between; align-items: center; }
+    .entry { border: 1px solid #ddd; padding: 16px; margin: 16px 0; border-radius: 10px; background: #fafafa; }
+    .entry-image { max-width: 320px; width: 100%; height: auto; border-radius: 8px; margin-top: 10px; border: 1px solid #ddd; }
+    a.button { text-decoration: none; background: #111; color: white; padding: 10px 14px; border-radius: 8px; }
   </style>
 </head>
 <body>
@@ -46,17 +18,18 @@
     <a class="button" href="/new">Create Entry</a>
   </div>
 
-  {% if rows %}
-    {% for row in rows %}
+  {% if entries %}
+    {% for entry in entries %}
       <div class="entry">
-        <h3>{{ row[1] }}</h3>
-        <p>{{ row[2] }}</p>
+        <h3>{{ entry.title }}</h3>
+        <p>{{ entry.content }}</p>
 
-        {% if row[3] %}
-          <img src="{{ row[3] }}" alt="Uploaded image">
+        {% if entry.get('image_url') %}
+          <img class="entry-image" src="{{ entry.get('image_url') }}" alt="Uploaded image">
+          <p><a href="{{ entry.get('image_url') }}" target="_blank">Open image</a></p>
         {% endif %}
 
-        <p><small>{{ row[4] }}</small></p>
+        <p><small>{{ entry.created_at }}</small></p>
       </div>
     {% endfor %}
   {% else %}

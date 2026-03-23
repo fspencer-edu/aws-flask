@@ -1,0 +1,1 @@
+from services.db import init_db
